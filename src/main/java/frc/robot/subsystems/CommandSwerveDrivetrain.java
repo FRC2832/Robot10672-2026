@@ -8,8 +8,13 @@ import java.util.function.Supplier;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -49,6 +54,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+
+    //For use in auton
+    private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric()
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
     /*
      * SysId routine for characterizing translation. This is used to find PID gains
@@ -130,6 +139,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        onInit();
     }
 
     /**
@@ -155,6 +165,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        onInit();
     }
 
     /**
@@ -195,6 +206,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
+        onInit();
+    }
+
+    ///To be run at the end of each constructor
+    private void onInit(){
+        //Set up pathplanner
+        RobotConfig config = null;
+        try{
+            config = RobotConfig.fromGUISettings();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        AutoBuilder.configure(
+            () -> this.getState().Pose, 
+            this::resetPose, 
+            () -> this.getKinematics().toChassisSpeeds(this.getState().ModuleStates), 
+            speeds -> this.setControl(robotCentric
+                    .withVelocityX(speeds.vxMetersPerSecond)
+                    .withVelocityY(speeds.vyMetersPerSecond)
+                    .withRotationalRate(speeds.omegaRadiansPerSecond)), 
+            new PPHolonomicDriveController(new PIDConstants(5,0,0), new PIDConstants(5,0,0)), 
+            config, 
+            () -> DriverStation.getAlliance().map(alliance -> alliance == DriverStation.Alliance.Red).orElse(false), 
+            this
+        );
     }
 
     /**
