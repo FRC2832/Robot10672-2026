@@ -56,7 +56,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveSteerGains steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
-    //For use in auton
+    // For use in auton
     private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
@@ -210,28 +210,27 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         onInit();
     }
 
-    ///To be run at the end of each constructor
-    private void onInit(){
-        //Set up pathplanner
+    /// To be run at the end of each constructor
+    private void onInit() {
+        // Set up pathplanner
         RobotConfig config = null;
-        try{
+        try {
             config = RobotConfig.fromGUISettings();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         AutoBuilder.configure(
-            () -> this.getState().Pose, 
-            this::resetPose, 
-            () -> this.getKinematics().toChassisSpeeds(this.getState().ModuleStates), 
-            speeds -> this.setControl(robotCentric
-                    .withVelocityX(speeds.vxMetersPerSecond)
-                    .withVelocityY(speeds.vyMetersPerSecond)
-                    .withRotationalRate(speeds.omegaRadiansPerSecond)), 
-            new PPHolonomicDriveController(new PIDConstants(5,0,0), new PIDConstants(5,0,0)), 
-            config, 
-            () -> DriverStation.getAlliance().map(alliance -> alliance == DriverStation.Alliance.Red).orElse(false), 
-            this
-        );
+                () -> this.getState().Pose,
+                this::resetPose,
+                () -> this.getKinematics().toChassisSpeeds(this.getState().ModuleStates),
+                speeds -> this.setControl(robotCentric
+                        .withVelocityX(speeds.vxMetersPerSecond)
+                        .withVelocityY(speeds.vyMetersPerSecond)
+                        .withRotationalRate(speeds.omegaRadiansPerSecond)),
+                new PPHolonomicDriveController(new PIDConstants(5, 0, 0), new PIDConstants(5, 0, 0)),
+                config,
+                () -> DriverStation.getAlliance().map(alliance -> alliance == DriverStation.Alliance.Red).orElse(false),
+                this);
     }
 
     /**
