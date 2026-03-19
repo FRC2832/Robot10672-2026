@@ -12,7 +12,7 @@ import frc.robot.subsystems.CANFuelSubsystem;
 public class SpinUp extends Command {
     /** Creates a new Intake. */
 
-    CANFuelSubsystem fuelSubsystem;
+    private final CANFuelSubsystem fuelSubsystem;
 
     public SpinUp(CANFuelSubsystem fuelSystem) {
         addRequirements(fuelSystem);
