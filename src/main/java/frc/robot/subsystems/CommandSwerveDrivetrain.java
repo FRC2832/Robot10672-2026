@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-
+import frc.robot.RobotContainer;
+import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -57,7 +58,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SysIdRoutine sysIdRoutineTranslation = new SysIdRoutine(
             new SysIdRoutine.Config(
                     null, // Use default ramp rate (1 V/s)
-                    Volts.of(4), // Reduce dynamic step voltage to 4 V to prevent brownout
+                    Volts.of(4.0), // Reduce dynamic step voltage to 4 V to prevent brownout
                     null, // Use default timeout (10 s)
                     // Log state with SignalLogger class
                     state -> SignalLogger.writeString("SysIdTranslation_State", state.toString())),
@@ -73,7 +74,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SysIdRoutine sysIdRoutineSteer = new SysIdRoutine(
             new SysIdRoutine.Config(
                     null, // Use default ramp rate (1 V/s)
-                    Volts.of(7), // Use dynamic voltage of 7 V
+                    Volts.of(7.0), // Use dynamic voltage of 7 V
                     null, // Use default timeout (10 s)
                     // Log state with SignalLogger class
                     state -> SignalLogger.writeString("SysIdSteer_State", state.toString())),
@@ -92,7 +93,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SysIdRoutine sysIdRoutineRotation = new SysIdRoutine(
             new SysIdRoutine.Config(
                     /* This is in radians per second², but SysId only supports "volts per second" */
-                    Volts.of(Math.PI / 6).per(Second),
+                    Volts.of(Math.PI / 6.0).per(Second),
                     /* This is in radians per second, but SysId only supports "volts" */
                     Volts.of(Math.PI),
                     null, // Use default timeout (10 s)
@@ -321,5 +322,37 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     @Override
     public Optional<Pose2d> samplePoseAt(double timestampSeconds) {
         return super.samplePoseAt(Utils.fpgaToCurrentTime(timestampSeconds));
+    }
+
+    /**
+     * this activates snail mode
+     */
+
+    public void snailMode() {
+        double maxSpeed = RobotContainer.getMaxSpeed();
+        double maxAngularRate = RobotContainer.getMaxAngularRate();
+        this.setMaximumAllowableSpeeds(0.4 * maxSpeed, 0.4 * maxAngularRate);
+    }
+
+    /**
+     * this activates turtle mode
+     */
+    public void turtleMode() {
+        double maxSpeed = RobotContainer.getMaxSpeed();
+        double maxAngularRate = RobotContainer.getMaxAngularRate();
+        this.setMaximumAllowableSpeeds(0.7 * maxSpeed, 0.7 * maxAngularRate);
+    }
+
+    public void setMaximumAllowableSpeeds(double speed, double angularRate) {
+        RobotContainer.setMaxSpeed(speed);
+        RobotContainer.setMaxAngularRate(angularRate);
+    }
+
+    public void resetMaximumSpeed() {
+        RobotContainer.setMaxAngularRate(RotationsPerSecond.of(0.4).in(RadiansPerSecond)); // 3/4 of a rotation per
+                                                                                           // second max angular
+                                                                                           // velocity
+        RobotContainer.setMaxSpeed(1.0 * TunerConstants.SPEED_AT_12_VOLTS.in(MetersPerSecond)); // kSpeedAt12Volts
+                                                                                                // desired top speed
     }
 }
