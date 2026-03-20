@@ -33,7 +33,7 @@ public class RobotContainer {
     private static double maxSpeed = 0.8 * TunerConstants.SPEED_AT_12_VOLTS.in(MetersPerSecond); // kSpeedAt12Volts
                                                                                                  // desired top
                                                                                                  // speed
-    private static double maxAngularRate = 0 * RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation
+    private static double maxAngularRate = 0.85 * RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation
                                                                                              // per second
                                                                                              // max angular velocity
 
