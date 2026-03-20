@@ -31,7 +31,7 @@ public class TunerConstants {
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
     private static final Slot0Configs DRIVE_GAINS = new Slot0Configs()
-            .withKP(0.1).withKI(0).withKD(0)
+            .withKP(0.1).withKI(0).withKD(0.05)
             .withKS(0).withKV(0.124);
 
     // The closed-loop output type to use for the steer motors;
@@ -48,7 +48,7 @@ public class TunerConstants {
 
     // The remote sensor feedback type to use for the steer motors;
     // When not Pro-licensed, Fused*/Sync* automatically fall back to Remote*
-    private static final SteerFeedbackType STEER_FEEDBACK_TYPE = SteerFeedbackType.FusedCANcoder;
+    private static final SteerFeedbackType STEER_FEEDBACK_TYPE = SteerFeedbackType.RemoteCANcoder;
 
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
@@ -58,7 +58,14 @@ public class TunerConstants {
     // cannot be null.
     // Some configs will be overwritten; check the `with*InitialConfigs()` API
     // documentation.
-    private static final TalonFXConfiguration DRIVE_INITIAL_CONFIGS = new TalonFXConfiguration();
+    private static final TalonFXConfiguration DRIVE_INITIAL_CONFIGS = new TalonFXConfiguration()
+            .withCurrentLimits(
+                    new CurrentLimitsConfigs()
+                            .withStatorCurrentLimit(60)
+                            .withStatorCurrentLimitEnable(true)
+                            .withSupplyCurrentLimit(50)
+                            .withSupplyCurrentLimitEnable(true)
+            );
     private static final TalonFXConfiguration STEER_INITIAL_CONFIGS = new TalonFXConfiguration()
             .withCurrentLimits(
                     new CurrentLimitsConfigs()
@@ -66,7 +73,10 @@ public class TunerConstants {
                             // relatively low
                             // stator current limit to help avoid brownouts without impacting performance.
                             .withStatorCurrentLimit(Amps.of(60))
-                            .withStatorCurrentLimitEnable(true));
+                            .withStatorCurrentLimitEnable(true)
+                            .withSupplyCurrentLimit(50)
+                            .withSupplyCurrentLimitEnable(true)
+                        );
     private static final CANcoderConfiguration ENCODER_INITIAL_CONFIGS = new CANcoderConfiguration();
     // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
     private static final Pigeon2Configuration PIGEON_CONFIGS = null;
@@ -140,7 +150,7 @@ public class TunerConstants {
     private static final int FRONT_RIGHT_DRIVE_MOTOR_ID = 3;
     private static final int FRONT_RIGHT_STEER_MOTOR_ID = 2;
     private static final int FRONT_RIGHT_ENCODER_ID = 13;
-    private static final Angle FRONT_RIGHT_ENCODER_OFFSET = Rotations.of(0.880126953125);
+    private static final Angle FRONT_RIGHT_ENCODER_OFFSET = Rotations.of(0.380126953125);
     private static final boolean FRONT_RIGHT_STEER_MOTOR_INVERTED = true;
     private static final boolean FRONT_RIGHT_ENCODER_INVERTED = false;
 
@@ -162,7 +172,7 @@ public class TunerConstants {
     private static final int BACK_RIGHT_DRIVE_MOTOR_ID = 6;
     private static final int BACK_RIGHT_STEER_MOTOR_ID = 5;
     private static final int BACK_RIGHT_ENCODER_ID = 12;
-    private static final Angle BACK_RIGHT_ENCODER_OFFSET = Rotations.of(0.63330078125);
+    private static final Angle BACK_RIGHT_ENCODER_OFFSET = Rotations.of(0.13330078125);
     private static final boolean BACK_RIGHT_STEER_MOTOR_INVERTED = true;
     private static final boolean BACK_RIGHT_ENCODER_INVERTED = false;
 
