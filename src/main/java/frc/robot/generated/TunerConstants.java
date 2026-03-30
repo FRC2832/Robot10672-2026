@@ -64,8 +64,7 @@ public class TunerConstants {
                             .withStatorCurrentLimit(60)
                             .withStatorCurrentLimitEnable(true)
                             .withSupplyCurrentLimit(50)
-                            .withSupplyCurrentLimitEnable(true)
-            );
+                            .withSupplyCurrentLimitEnable(true));
     private static final TalonFXConfiguration STEER_INITIAL_CONFIGS = new TalonFXConfiguration()
             .withCurrentLimits(
                     new CurrentLimitsConfigs()
@@ -75,8 +74,7 @@ public class TunerConstants {
                             .withStatorCurrentLimit(Amps.of(60))
                             .withStatorCurrentLimitEnable(true)
                             .withSupplyCurrentLimit(50)
-                            .withSupplyCurrentLimitEnable(true)
-                        );
+                            .withSupplyCurrentLimitEnable(true));
     private static final CANcoderConfiguration ENCODER_INITIAL_CONFIGS = new CANcoderConfiguration();
     // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
     private static final Pigeon2Configuration PIGEON_CONFIGS = null;

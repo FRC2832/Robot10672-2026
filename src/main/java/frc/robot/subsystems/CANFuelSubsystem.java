@@ -19,9 +19,8 @@ public class CANFuelSubsystem extends SubsystemBase {
     private final SparkMax feederRoller;
     private final SparkMax intakeLauncherRoller;
 
-    private static final int INTAKE_LAUNCHER_MOTOR_ID = 17; // FIXME: This one might need to be switched with
-                                                            // FEEDER_MOTOR_ID.
-    private static final int FEEDER_MOTOR_ID = 16; // FIXME: This.
+    private static final int INTAKE_LAUNCHER_MOTOR_ID = 17;
+    private static final int FEEDER_MOTOR_ID = 16;
     private static final int FEEDER_MOTOR_CURRENT_LIMIT = 60; // FIXME: Might not be the correct value.
     private static final int LAUNCHER_MOTOR_CURRENT_LIMIT = 60; // FIXME: Might not be the correct value.
     public static final double INTAKING_FEEDER_VOLTAGE = -12.0;
