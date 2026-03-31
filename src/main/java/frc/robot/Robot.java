@@ -16,8 +16,7 @@ public class Robot extends TimedRobot {
     private final RobotContainer robotContainer;
 
     /* log and replay timestamp and joystick data */
-    private final HootAutoReplay timeAndJoystickReplay = new HootAutoReplay()
-            .withTimestampReplay()
+    private final HootAutoReplay timeAndJoystickReplay = new HootAutoReplay().withTimestampReplay()
             .withJoystickReplay();
 
     public Robot() {
@@ -32,6 +31,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        robotContainer.drivetrain.resetMaximumSpeed();
     }
 
     @Override

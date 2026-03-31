@@ -15,10 +15,8 @@ public class TurtleModeCmd extends Command {
 
     public TurtleModeCmd(CommandSwerveDrivetrain swerve) {
         // Use addRequirements() here to declare subsystem dependencies.
-
         this.swerve = swerve;
         // addRequirements(swerve);
-
     }
 
     // Called when the command is initially scheduled.

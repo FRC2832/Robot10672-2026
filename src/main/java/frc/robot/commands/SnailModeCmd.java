@@ -10,15 +10,12 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SnailModeCmd extends Command {
     /** Creates a new SnailModeCmd. */
-
     private final CommandSwerveDrivetrain swerve;
 
     public SnailModeCmd(CommandSwerveDrivetrain swerve) {
         // Use addRequirements() here to declare subsystem dependencies.
-
         this.swerve = swerve;
         // addRequirements(swerve);
-
     }
 
     // Called when the command is initially scheduled.
