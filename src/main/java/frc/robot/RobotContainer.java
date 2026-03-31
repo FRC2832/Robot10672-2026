@@ -10,6 +10,8 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,6 +63,12 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+        //double allianceDriveFactor;
+        //if (DriverStation.getAlliance().get() == Alliance.Blue) {
+        //    allianceDriveFactor = -1.0;
+        //} else {
+        //    allianceDriveFactor = 1.0;
+        //}
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 // FIXME: When on blue alliance, the robot's control is inverted. We need to

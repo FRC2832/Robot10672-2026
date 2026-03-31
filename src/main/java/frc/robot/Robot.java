@@ -6,7 +6,10 @@ package frc.robot;
 
 import com.ctre.phoenix6.HootAutoReplay;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -44,6 +47,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        boolean isRed = DriverStation.getAlliance().get() == Alliance.Red;
+
+        if (isRed) {
+            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(0.0));
+        } else {
+            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(180.0));
+        }
         autonomousCommand = robotContainer.getAutonomousCommand();
 
         if (autonomousCommand != null) {
@@ -64,6 +74,14 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             CommandScheduler.getInstance().cancel(autonomousCommand);
         }
+        boolean isRed = DriverStation.getAlliance().get() == Alliance.Red;
+
+        if (isRed) {
+            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(0.0));
+        } else {
+            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(180.0));
+        }
+
     }
 
     @Override
