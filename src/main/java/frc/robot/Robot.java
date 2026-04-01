@@ -47,15 +47,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        boolean isRed = DriverStation.getAlliance().get() == Alliance.Red;
-
-        if (isRed) {
-            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(0.0));
-        } else {
-            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(180.0));
-        }
+        setDrivetrainRotationByAlliance();
         autonomousCommand = robotContainer.getAutonomousCommand();
-
         if (autonomousCommand != null) {
             CommandScheduler.getInstance().schedule(autonomousCommand);
         }
@@ -71,17 +64,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        setDrivetrainRotationByAlliance();
         if (autonomousCommand != null) {
             CommandScheduler.getInstance().cancel(autonomousCommand);
         }
-        boolean isRed = DriverStation.getAlliance().get() == Alliance.Red;
-
-        if (isRed) {
-            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(0.0));
-        } else {
-            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(180.0));
-        }
-
     }
 
     @Override
@@ -107,5 +93,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void simulationPeriodic() {
+    }
+
+    private void setDrivetrainRotationByAlliance() {
+        double rotationDegrees = DriverStation.getAlliance().get() == Alliance.Red ? 0.0 : 180.0;
+        robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(rotationDegrees));
     }
 }

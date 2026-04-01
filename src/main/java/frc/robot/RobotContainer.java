@@ -34,7 +34,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class RobotContainer {
     private static double maxSpeed = 0.8 * TunerConstants.SPEED_AT_12_VOLTS.in(MetersPerSecond); // kSpeedAt12Volts
                                                                                                  // desired top speed
-    private static double maxAngularRate = 0.85 * RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation
+    private static double maxAngularRate = 0.7 * RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation
                                                                                                     // per second max
                                                                                                     // angular velocity
 
@@ -71,8 +71,6 @@ public class RobotContainer {
         //}
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
-                // FIXME: When on blue alliance, the robot's control is inverted. We need to
-                // further troubleshoot.
                 drivetrain.applyRequest(() -> drive
                         .withVelocityX(-driverController.getLeftY() * maxSpeed) // Drive forward with negative Y
                                                                                 // (forward)
