@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
     private Command autonomousCommand;
 
+    private static Alliance lastEnabledAlliance = Alliance.Red;
+
     private final RobotContainer robotContainer;
 
     /* log and replay timestamp and joystick data */
@@ -96,7 +98,11 @@ public class Robot extends TimedRobot {
     }
 
     private void setDrivetrainRotationByAlliance() {
-        double rotationDegrees = DriverStation.getAlliance().get() == Alliance.Red ? 0.0 : 180.0;
-        robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(rotationDegrees));
+        Alliance currentAlliance = DriverStation.getAlliance().get();
+        if (lastEnabledAlliance != currentAlliance) {
+            lastEnabledAlliance = DriverStation.getAlliance().get();
+            double rotationDegrees = DriverStation.getAlliance().get() == Alliance.Red ? 0.0 : 180.0;
+            robotContainer.drivetrain.resetRotation(Rotation2d.fromDegrees(rotationDegrees));
+        }
     }
 }
